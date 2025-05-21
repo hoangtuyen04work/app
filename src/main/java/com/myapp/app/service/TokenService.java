@@ -2,7 +2,6 @@ package com.myapp.app.service;
 
 import com.myapp.app.entity.TokenEntity;
 import com.myapp.app.entity.UserEntity;
-import com.myapp.app.exception.AppException;
 import com.myapp.app.repo.TokenRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +15,10 @@ public class TokenService {
     private TokenRepo repo;
 
     @Transactional
-    public void saveToken(String token, UserEntity user) throws AppException {
+    public void saveToken(String token, UserEntity user) {
         TokenEntity tokenEntity = repo.findByUserId(user.getId());
         if(tokenEntity != null) {
-            user.setToken(null); // Xóa tham chiếu từ UserEntity
+            user.setToken(null);
             repo.deleteById(tokenEntity.getId());
             repo.flush();
         }
