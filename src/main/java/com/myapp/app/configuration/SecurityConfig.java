@@ -1,5 +1,6 @@
 package com.myapp.app.configuration;
 
+import com.utils.token.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,6 +57,8 @@ public class SecurityConfig {
                                 .requestMatchers("/logout").permitAll()
                                 .requestMatchers("/info").hasRole("USER")
                                 .requestMatchers("/info/token").permitAll()
+                                .requestMatchers("/test1").permitAll()
+                                .requestMatchers("/test2").permitAll()
                                 .anyRequest().authenticated());
         return httpSecurity.build();
     }

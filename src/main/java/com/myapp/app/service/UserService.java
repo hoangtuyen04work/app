@@ -7,8 +7,8 @@ import com.myapp.app.entity.UserEntity;
 import com.myapp.app.exception.AppException;
 import com.myapp.app.exception.ErrorCode;
 import com.myapp.app.repo.UserRepo;
-import com.myapp.app.utils.TokenUtils;
 import com.nimbusds.jose.JOSEException;
+import com.utils.token.TokenUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,9 @@ import java.text.ParseException;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    final private TokenUtils tokenUtil;
+
+
     @Autowired
     private UserRepo repo;
     @Autowired
@@ -45,7 +48,7 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         user = repo.save(user);
-        String token = tokenUtils.generateToken(user);
+        String token = tokenUtils.generateToken(user.getId());
         tokenService.saveToken(token, user);
         return token;
     }
@@ -69,7 +72,7 @@ public class UserService {
         }
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw  new AppException(ErrorCode.WRONG_PASSWORD_OR_USERID);
-        String token = tokenUtils.generateToken(user);
+        String token = tokenUtils.generateToken(user.getId());
         tokenService.saveToken(token, user);
         return token;
     }
