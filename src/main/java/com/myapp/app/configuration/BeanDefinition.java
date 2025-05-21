@@ -1,13 +1,16 @@
 package com.myapp.app.configuration;
 
 import com.utils.token.TokenUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanDefinition {
+    @Value("${jwt.signerKey}")
+    private String signerKey;
     @Bean
     public TokenUtils myService() {
-        return new TokenUtils(); // Tùy vào constructor, truyền tham số nếu cần
+        return new TokenUtils(signerKey);
     }
 }
