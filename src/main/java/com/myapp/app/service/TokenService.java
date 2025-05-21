@@ -3,7 +3,6 @@ package com.myapp.app.service;
 import com.myapp.app.entity.TokenEntity;
 import com.myapp.app.entity.UserEntity;
 import com.myapp.app.exception.AppException;
-import com.myapp.app.exception.ErrorCode;
 import com.myapp.app.repo.TokenRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

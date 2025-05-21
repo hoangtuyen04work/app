@@ -23,7 +23,6 @@ import java.text.ParseException;
 public class UserService {
     final private TokenUtils tokenUtil;
 
-
     @Autowired
     private UserRepo repo;
     @Autowired
