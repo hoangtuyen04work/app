@@ -3,6 +3,7 @@ package com.myapp.app.service;
 import com.myapp.app.dto.request.UserCreationRequest;
 import com.myapp.app.dto.request.UserLoginRequest;
 import com.myapp.app.dto.response.UserResponse;
+import com.myapp.app.entity.RoleEntity;
 import com.myapp.app.entity.UserEntity;
 import com.myapp.app.exception.AppException;
 import com.myapp.app.exception.ErrorCode;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,8 @@ public class UserService {
     private TokenUtils tokenUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleService roleService;
 
     @Transactional
     public String signup(UserCreationRequest request) throws JOSEException, AppException {
@@ -44,12 +49,22 @@ public class UserService {
                 .phone(request.getPhone())
                 .userName(request.getUserName())
                 .address(request.getAddress())
+                .roles(List.of(roleService.getRoleByRoleName("USER")))
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         user = repo.save(user);
-        String token = tokenUtils.generateToken(user.getId());
+
+        String token = tokenUtils.generateToken(user.getId(), buildRoles(user.getRoles()));
         tokenService.saveToken(token, user);
         return token;
+    }
+
+    private List<String> buildRoles(List<RoleEntity> roles){
+        List<String> result = new ArrayList<>();
+        for(RoleEntity role : roles){
+            result.add(role.getRoleName());
+        }
+        return result;
     }
 
     public String login(UserLoginRequest request) throws AppException, JOSEException {
@@ -71,7 +86,7 @@ public class UserService {
         }
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
             throw  new AppException(ErrorCode.WRONG_PASSWORD_OR_USERID);
-        String token = tokenUtils.generateToken(user.getId());
+        String token = tokenUtils.generateToken(user.getId(), buildRoles(user.getRoles()));
         tokenService.saveToken(token, user);
         return token;
     }
