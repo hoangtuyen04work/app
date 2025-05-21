@@ -2,9 +2,9 @@ package com.myapp.app.configuration;
 
 
 import com.myapp.app.exception.AppException;
-import com.myapp.app.utils.TokenUtils;
 import com.nimbusds.jose.JOSEException;
 
+import com.utils.token.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     public Jwt decode(String token) throws JwtException {
         try {
             tokenUtils.isValidToken(token);
-        } catch (AppException | ParseException | JOSEException e) {
+        } catch (ParseException | JOSEException e) {
 
         }
         if (Objects.isNull(nimbusJwtDecoder)) {

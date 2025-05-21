@@ -14,10 +14,12 @@ java {
 }
 
 repositories {
+	mavenLocal() // To find the published JAR
 	mavenCentral()
 }
 
 dependencies {
+	implementation 'com.utils:token-utils:0.0.1-SNAPSHOT'
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
