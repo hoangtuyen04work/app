@@ -1,6 +1,5 @@
 package com.myapp.app.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.myapp.app.dto.ApiResponse;
 import com.myapp.app.dto.request.UserCreationRequest;
 import com.myapp.app.dto.request.UserLoginRequest;
@@ -39,7 +38,7 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/logout")
+    @PutMapping("/logoutt")
     public ApiResponse<Boolean> logout(@RequestBody String token) {
         return ApiResponse.<Boolean>builder()
                 .data(userService.logout(token))
@@ -58,5 +57,16 @@ public class UserController {
         return ApiResponse.<UserResponse>builder()
                 .data(userService.getUserInfo())
                 .build();
+    }
+
+    @GetMapping(value = "/info/user/{id}")
+    public UserResponse info(@PathVariable("id") String id) throws AppException {
+        var result = userService.getUserInfoById(id);
+        return result;
+    }
+
+    @GetMapping("/test")
+    public String info() throws AppException {
+        return "hello";
     }
 }

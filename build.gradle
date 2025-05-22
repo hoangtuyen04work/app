@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+	implementation 'com.utils:token-utils:0.0.6-SNAPSHOT'
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -32,7 +34,7 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:2.3.230'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation 'com.utils:token-utils:0.0.3-SNAPSHOT'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
 
 }
 

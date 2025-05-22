@@ -24,7 +24,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    final private TokenUtils tokenUtil;
 
     @Autowired
     private UserRepo repo;
@@ -53,7 +52,6 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         user = repo.save(user);
-
         String token = tokenUtils.generateToken(user.getId(), buildRoles(user.getRoles()));
         tokenService.saveToken(token, user);
         return token;
@@ -99,6 +97,19 @@ public class UserService {
     public UserEntity save(UserEntity user){
         return repo.save(user);
     }
+
+    public UserResponse getUserInfoById(String userId) throws AppException {
+        UserEntity user = repo.findById(userId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        return UserResponse.builder()
+                .userName(user.getUserName())
+                .dob(user.getDob())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .address(user.getAddress())
+                .id(user.getId())
+                .build();
+    }
+
 
     public UserResponse getUserInfo() throws AppException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
