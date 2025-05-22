@@ -1,16 +1,17 @@
 package com.myapp.app.configuration;
 
+import com.myapp.app.exception.AppException;
+import com.myapp.app.exception.ErrorCode;
 import com.myapp.app.service.CustomUserDetailsService;
+import com.myapp.app.service.TokenService;
 import com.nimbusds.jose.JOSEException;
 import com.utils.token.TokenUtils;
-import jakarta.persistence.Access;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private TokenUtils tokenUtils;
-
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -34,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         String userId = null;
         String jwt = null;
-        if (header != null || header.startsWith("Bearer ")) {
+        if (header != null && header.startsWith("Bearer ")) {
             jwt = header.replace("Bearer ", "");
             try {
                 userId = tokenUtils.getUserIdByToken(jwt);
@@ -42,12 +44,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 throw new RuntimeException(e);
             }
         }
-        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-
+        if(jwt != null && !tokenService.existToken(jwt))
+            try {
+                throw new AppException(ErrorCode.NOT_AUTHENTICATION);
+            } catch (AppException e) {
+                throw new RuntimeException(e);
+            }
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = customUserDetailsService.loadUserByUsername(userId);
             try {
-                if (tokenUtils.checkToken(jwt)) {
+                if (tokenUtils.isValidToken(jwt)) {
                     var authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -34,9 +34,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/signup").permitAll()
-                .requestMatchers("/logout").permitAll()
+                .requestMatchers("/logoutt").permitAll()
                 .requestMatchers("/info").hasRole("USER")
                 .requestMatchers("/info/token").permitAll()
+                .requestMatchers("/info/user/*").permitAll()
+                .requestMatchers("/test").permitAll()
+
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
