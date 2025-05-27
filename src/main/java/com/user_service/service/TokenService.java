@@ -1,6 +1,8 @@
 package com.user_service.service;
 
 
+import com.commons.commons_security.TokenUtils;
+import com.nimbusds.jose.JOSEException;
 import com.user_service.entity.TokenEntity;
 import com.user_service.entity.UserEntity;
 import com.user_service.repo.TokenRepo;
@@ -9,11 +11,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+
 @Service
 @RequiredArgsConstructor
 public class TokenService {
     @Autowired
     private TokenRepo repo;
+    @Autowired
+    private TokenUtils tokenUtils;
+
+    public boolean authenticate(String token) throws ParseException, JOSEException {
+        if(token != null && tokenUtils.isValidToken(token) && existToken(token))
+            return true;
+        return false;
+    }
 
     @Transactional
     public void saveToken(String token, UserEntity user) {
