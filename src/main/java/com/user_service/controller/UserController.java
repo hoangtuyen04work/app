@@ -8,6 +8,7 @@ import com.user_service.dto.request.UserCreationRequest;
 import com.user_service.dto.request.UserLoginRequest;
 import com.user_service.dto.response.OB;
 import com.commons.commonscore.exception.AppException;
+import com.user_service.service.TokenService;
 import com.user_service.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import java.text.ParseException;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
     @Transactional
@@ -74,5 +77,9 @@ public class UserController {
         return OB.builder()
                 .message("test")
                 .build();
+    }
+    @GetMapping("/auth")
+    public boolean auth(@RequestParam String token) throws ParseException, JOSEException {
+        return tokenService.authenticate(token);
     }
 }
