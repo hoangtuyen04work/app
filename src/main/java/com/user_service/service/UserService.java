@@ -1,15 +1,17 @@
 package com.user_service.service;
 
 
+import com.commons.commons_client.utils.UserToPostClient;
 import com.commons.commons_security.TokenUtils;
+import com.commons.commonscore.dto.response.UserResponse;
+import com.commons.commonscore.exception.AppException;
+import com.commons.commonscore.exception.ErrorCode;
 import com.nimbusds.jose.JOSEException;
 import com.user_service.dto.request.UserCreationRequest;
 import com.user_service.dto.request.UserLoginRequest;
-import com.user_service.dto.response.UserResponse;
 import com.user_service.entity.RoleEntity;
 import com.user_service.entity.UserEntity;
-import com.user_service.exception.AppException;
-import com.user_service.exception.ErrorCode;
+
 import com.user_service.repo.UserRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private UserToPostClient userToPostClient;
 
     @Transactional
     public String signup(UserCreationRequest request) throws JOSEException, AppException {
@@ -53,6 +57,7 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         user = repo.save(user);
+        userToPostClient.info(user.getId());
         String token = tokenUtils.generateToken(user.getId(), buildRoles(user.getRoles()));
         tokenService.saveToken(token, user);
         return token;

@@ -1,7 +1,5 @@
 package com.user_service.configuration;
 
-
-
 import com.user_service.entity.RoleEntity;
 import com.user_service.entity.UserEntity;
 import com.user_service.repo.RoleRepo;

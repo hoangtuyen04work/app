@@ -2,8 +2,8 @@ package com.user_service.configuration;
 
 import com.nimbusds.jose.JOSEException;
 import com.commons.commons_security.TokenUtils;
-import com.user_service.exception.AppException;
-import com.user_service.exception.ErrorCode;
+import com.commons.commonscore.exception.AppException;
+import com.commons.commonscore.exception.ErrorCode;
 import com.user_service.service.CustomUserDetailsService;
 import com.user_service.service.TokenService;
 import jakarta.servlet.FilterChain;

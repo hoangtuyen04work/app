@@ -1,8 +1,9 @@
 package com.user_service.service;
 
+import com.commons.commonscore.exception.AppException;
+import com.commons.commonscore.exception.ErrorCode;
 import com.user_service.entity.RoleEntity;
-import com.user_service.exception.AppException;
-import com.user_service.exception.ErrorCode;
+
 import com.user_service.repo.RoleRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
