@@ -22,7 +22,7 @@ public class TokenService {
     private TokenUtils tokenUtils;
 
     public boolean authenticate(String token) throws ParseException, JOSEException {
-        if(token != null && tokenUtils.isValidToken(token) && existToken(token))
+        if(token != null && existToken(token) && tokenUtils.isValidToken(token) )
             return true;
         return false;
     }

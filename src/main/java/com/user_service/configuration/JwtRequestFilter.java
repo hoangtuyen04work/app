@@ -38,13 +38,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwt = null;
         if (header != null && header.startsWith("Bearer ")) {
             jwt = header.replace("Bearer ", "");
+
+
+
             try {
                 userId = tokenUtils.getUserIdByToken(jwt);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
         }
-        if(jwt != null && !tokenService.existToken(jwt))
+        if(jwt == null && !tokenService.existToken(jwt))
             try {
                 throw new AppException(ErrorCode.NOT_AUTHENTICATION);
             } catch (AppException e) {
