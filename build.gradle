@@ -36,10 +36,9 @@ dependencies {
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2'
 
-
+	implementation 'com.commons:commons-client:0.0.3-SNAPSHOT'
 	implementation 'com.commons:commons-core:0.0.1-SNAPSHOT'
 	implementation 'com.commons:commons-security:0.0.1-SNAPSHOT'
-	implementation 'com.commons:commons-client:0.0.3-SNAPSHOT'
 
 
 }

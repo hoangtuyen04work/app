@@ -2,6 +2,7 @@ package com.user_service.configuration;
 
 import com.commons.commons_security.TokenUtils;
 
+import com.commons.commonscore.exception.AppException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,5 +15,8 @@ public class BeanDefinition {
     public TokenUtils myService() {
         return new TokenUtils(signerKey);
     }
-
+    @Bean
+    public AppException appException() {
+        return new AppException();
+    }
 }
