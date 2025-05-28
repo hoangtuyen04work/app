@@ -57,7 +57,12 @@ public class UserService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         user = repo.save(user);
-        userToPostClient.info(user.getId());
+        try{
+            userToPostClient.info(user.getId());
+        }
+        catch(Exception e){
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }
         String token = tokenUtils.generateToken(user.getId(), buildRoles(user.getRoles()));
         tokenService.saveToken(token, user);
         return token;

@@ -29,20 +29,22 @@ public class ApplicationInitConfig {
                 RoleEntity admin = RoleEntity.builder()
                         .roleName("ADMIN")
                         .build();
-                roleRepo.save(admin);
-                roles.add(admin);
+
+                roles.add(roleRepo.save(admin));
             }
             if(!roleRepo.existsByRoleName("USER")){
                 RoleEntity user = RoleEntity.builder()
                         .roleName("USER")
                         .build();
-                roleRepo.save(user);
-                roles.add(user);
+
+                roles.add(roleRepo.save(user));
             }
             if(!userRepo.existsByUserName("ADMIN")){
-                UserEntity user = UserEntity
-                                .builder()
+                UserEntity user = UserEntity.builder()
                                 .userName("ADMIN")
+                                .email("ADMIN")
+                                .phone("ADMIN")
+                                .roles(roles)
                                 .password(passwordEncoder.encode("ADMIN"))
                                 .build();
                 userRepo.save(user);

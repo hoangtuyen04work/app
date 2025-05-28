@@ -2,6 +2,7 @@ package com.user_service.service;
 
 
 import com.commons.commons_security.TokenUtils;
+import com.commons.commonscore.exception.AppException;
 import com.nimbusds.jose.JOSEException;
 import com.user_service.entity.TokenEntity;
 import com.user_service.entity.UserEntity;
@@ -21,7 +22,7 @@ public class TokenService {
     @Autowired
     private TokenUtils tokenUtils;
 
-    public boolean authenticate(String token) throws ParseException, JOSEException {
+    public boolean authenticate(String token) throws ParseException, JOSEException, AppException {
         if(token != null && existToken(token) && tokenUtils.isValidToken(token) )
             return true;
         return false;

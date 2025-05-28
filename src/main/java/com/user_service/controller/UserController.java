@@ -78,8 +78,9 @@ public class UserController {
                 .message("test")
                 .build();
     }
+
     @GetMapping("/auth")
-    public boolean auth(@RequestParam String token) throws ParseException, JOSEException {
+    public boolean auth(@RequestParam String token) throws ParseException, JOSEException, AppException {
         return tokenService.authenticate(token);
     }
 }
